@@ -10,7 +10,6 @@
 
   outputs = { self, nixpkgs, hello-src, gnulib-src }:
     let
-
       # Generate a user-friendly version numer.
       version = builtins.substring 0 8 hello-src.lastModifiedDate;
 
@@ -24,7 +23,6 @@
       nixpkgsFor = forAllSystems (system: import nixpkgs { inherit system; overlays = [ self.overlay ]; });
 
     in
-
     {
 
       # A Nixpkgs overlay.
@@ -54,7 +52,8 @@
       packages = forAllSystems (system:
         {
           inherit (nixpkgsFor.${system}) hello;
-        });
+        }
+      );
 
       # The default package for 'nix build'. This makes sense if the
       # flake provides only one package or there is a clear "main"
