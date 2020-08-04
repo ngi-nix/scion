@@ -43,6 +43,11 @@
           version = versions.scion;
         });
 
+        scion-systemd-wrapper = (callPackage ./pkgs/scion/systemd-wrapper.nix { }).overrideAttrs (_: {
+          src = scion-builder-src + "/scion-systemd-wrapper";
+          version = versions.scion-builder;
+        });
+
         scion-apps = (callPackage ./pkgs/scion-apps { }).overrideAttrs (_: {
           src = scion-apps-src;
           version = versions.scion;
@@ -65,7 +70,8 @@
         in
         {
           inherit (pkgSet)
-            scion scion-apps scionlab;
+            scion scion-apps scionlab
+            scion-systemd-wrapper;
         }
       );
 
