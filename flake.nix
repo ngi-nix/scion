@@ -89,6 +89,7 @@
       # A NixOS module, if applicable (e.g. if the package provides a system service).
       nixosModules = {
         scionlab = import ./modules/scionlab.nix;
+        scion-apps = import ./modules/scion-apps;
       };
 
       # Tests run by 'nix flake check' and by Hydra.
