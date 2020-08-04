@@ -61,6 +61,11 @@
             version = versions.scionlab;
           });
 
+        rains = (callPackage ./pkgs/rains { }).overrideAttrs (_: {
+          src = rains-src;
+          version = versions.rains;
+        });
+
       };
 
       # Provide some binary packages for selected system types.
@@ -71,7 +76,8 @@
         {
           inherit (pkgSet)
             scion scion-apps scionlab
-            scion-systemd-wrapper;
+            scion-systemd-wrapper
+            rains;
         }
       );
 
