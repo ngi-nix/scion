@@ -72,8 +72,7 @@
         };
 
       # Tests run by 'nix flake check' and by Hydra.
-      checks = forAllSystems (system: {
-        inherit (self.packages.${system}) hello;
+      checks = forAllSystems (system: self.packages.${system} // {
 
         # Additional tests, if applicable.
         test =
