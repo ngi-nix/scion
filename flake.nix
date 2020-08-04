@@ -1,17 +1,27 @@
 {
-  description = "(insert short project description here)";
+  description = "Flake for the SCION Internet Architecture";
 
   # Nixpkgs / NixOS version to use.
-  inputs.nixpkgs.url = "nixpkgs/nixos-20.03";
+  inputs.nixpkgs = { type = "github"; owner = "NixOS"; repo = "nixpkgs"; ref = "nixos-unstable"; };
 
   # Upstream source tree(s).
-  inputs.hello-src = { url = git+https://git.savannah.gnu.org/git/hello.git; flake = false; };
-  inputs.gnulib-src = { url = git+https://git.savannah.gnu.org/git/gnulib.git; flake = false; };
+  inputs.scion-src = { type = "github"; owner = "netsec-ethz"; repo = "scion"; ref = "scionlab"; flake = false; };
+  inputs.scion-apps-src = { type = "github"; owner = "netsec-ethz"; repo = "scion-apps"; flake = false; };
+  inputs.scionlab-src = { type = "github"; owner = "netsec-ethz"; repo = "scionlab"; ref = "develop"; flake = false; };
+  inputs.scion-builder-src = { type = "github"; owner = "netsec-ethz"; repo = "scion-builder"; flake = false; };
 
-  outputs = { self, nixpkgs, hello-src, gnulib-src }:
+  inputs.rains-src = { type = "github"; owner = "netsec-ethz"; repo = "rains"; flake = false; };
+
+  outputs = { self, nixpkgs, scion-src, scion-apps-src, scionlab-src, scion-builder-src, rains-src, ... }@inputs:
     let
       # Generate a user-friendly version numer.
-      version = builtins.substring 0 8 hello-src.lastModifiedDate;
+      versions =
+        let
+          generateVersion = builtins.substring 0 8;
+        in
+        nixpkgs.lib.genAttrs
+          [ "scion" "scion-apps" "scionlab" "scion-builder" "rains" ]
+          (n: generateVersion inputs."${n}-src".lastModifiedDate);
 
       # System types to support.
       supportedSystems = [ "x86_64-linux" ];
