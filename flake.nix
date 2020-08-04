@@ -36,39 +36,30 @@
     {
 
       # A Nixpkgs overlay.
-      overlay = final: prev: {
+      overlay = final: prev: with final.pkgs; {
 
-        hello = with final; stdenv.mkDerivation rec {
-          name = "hello-${version}";
-
-          src = hello-src;
-
-          buildInputs = [ autoconf automake gettext gnulib perl gperf texinfo help2man ];
-
-          preConfigure = ''
-            mkdir -p .git # force BUILD_FROM_GIT
-            ./bootstrap --gnulib-srcdir=${gnulib-src} --no-git --skip-po
-          '';
-
-          meta = {
-            homepage = "https://www.gnu.org/software/hello/";
-            description = "A program to show a familiar, friendly greeting";
-          };
-        };
+        scion = (callPackage ./pkgs/scion { }).overrideAttrs (_: {
+          src = scion-src;
+          version = versions.scion;
+        });
 
       };
 
       # Provide some binary packages for selected system types.
       packages = forAllSystems (system:
+        let
+          pkgSet = nixpkgsFor.${system};
+        in
         {
-          inherit (nixpkgsFor.${system}) hello;
+          inherit (pkgSet)
+            scion;
         }
       );
 
       # The default package for 'nix build'. This makes sense if the
       # flake provides only one package or there is a clear "main"
       # package.
-      defaultPackage = forAllSystems (system: self.packages.${system}.hello);
+      defaultPackage = forAllSystems (system: self.packages.${system}.scion);
 
       # A NixOS module, if applicable (e.g. if the package provides a system service).
       nixosModules.hello =
