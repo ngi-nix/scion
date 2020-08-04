@@ -48,6 +48,14 @@
           version = versions.scion;
         });
 
+        scionlab =
+          ((callPackage ./pkgs/scionlab { }).override {
+            python = python3;
+          }).overrideAttrs (_: {
+            src = scionlab-src + "/scionlab/hostfiles/scionlab-config";
+            version = versions.scionlab;
+          });
+
       };
 
       # Provide some binary packages for selected system types.
@@ -57,7 +65,7 @@
         in
         {
           inherit (pkgSet)
-            scion scion-apps;
+            scion scion-apps scionlab;
         }
       );
 
