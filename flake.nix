@@ -43,6 +43,11 @@
           version = versions.scion;
         });
 
+        scion-apps = (callPackage ./pkgs/scion-apps { }).overrideAttrs (_: {
+          src = scion-apps-src;
+          version = versions.scion;
+        });
+
       };
 
       # Provide some binary packages for selected system types.
@@ -52,7 +57,7 @@
         in
         {
           inherit (pkgSet)
-            scion;
+            scion scion-apps;
         }
       );
 
