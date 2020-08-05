@@ -7,6 +7,7 @@ in
 {
   imports = [
     ./bwtester.nix
+    ./webapp.nix
   ];
 
   options.services.scion.apps = {
