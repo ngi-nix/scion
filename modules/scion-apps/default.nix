@@ -5,6 +5,10 @@ let
   cfg = config.services.scion.apps;
 in
 {
+  imports = [
+    ./bwtester.nix
+  ];
+
   options.services.scion.apps = {
     enable = mkOption {
       type = types.bool;
