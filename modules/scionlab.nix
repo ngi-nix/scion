@@ -9,7 +9,9 @@ in
     enable = mkOption {
       type = types.bool;
       default = false;
-      internal = true;
+      description = ''
+        Whether or not to connect to the experimental global deployment of SCION, SCIONLab
+      '';
     };
 
     openvpnConfig = mkOption {
@@ -81,10 +83,7 @@ in
     }
     )
 
-    (mkIf (cfg.openvpnConfig != null && cfg.configDirectory != null && cfg.v != null) {
-      environment.etc."scion/gen".source = cfg.configDirectory;
-      environment.systemPackages = with pkgs; [ scion ];
-
+    (mkIf (cfg.enable && cfg.openvpnConfig != null) {
       services.openvpn.servers.scion.config = (builtins.readFile cfg.openvpnConfig)
         + ''
           # Manage DNS configuration on a per-link basis for systemd-resolved
@@ -98,8 +97,18 @@ in
           dhcp-option DOMAIN-ROUTE .
         ''
       ;
+    })
 
-      services.scion.enable = true;
+    (mkIf cfg.enable {
+      assertions = [
+        { assertion = cfg.enable -> cfg.v != null;
+          message = "ISD AS identifier is invalid."; }
+        { assertion = cfg.enable -> cfg.configDirectory != null;
+          message = "SCION configuration is invalid."; }
+      ];
+
+      environment.etc."scion/gen".source = cfg.configDirectory;
+      environment.systemPackages = with pkgs; [ scion ];
 
       systemd.targets.scionlab = {
         # Since this is the "manual" approach, we have to ensure the openvpn is started before scionlab
