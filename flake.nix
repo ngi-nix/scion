@@ -90,6 +90,7 @@
       nixosModules = {
         scionlab = import ./modules/scionlab.nix;
         scion-apps = import ./modules/scion-apps;
+        rains = import ./modules/rains.nix;
       };
 
       # Tests run by 'nix flake check' and by Hydra.
