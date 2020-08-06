@@ -94,47 +94,7 @@
       };
 
       # Tests run by 'nix flake check' and by Hydra.
-      checks = forAllSystems (system: self.packages.${system} // {
-
-        # Additional tests, if applicable.
-        test =
-          with nixpkgsFor.${system};
-          stdenv.mkDerivation {
-            name = "hello-test-${version}";
-
-            buildInputs = [ hello ];
-
-            unpackPhase = "true";
-
-            buildPhase = ''
-              echo 'running some integration tests'
-              [[ $(hello) = 'Hello, world!' ]]
-            '';
-
-            installPhase = "mkdir -p $out";
-          };
-
-        # A VM test of the NixOS module.
-        vmTest =
-          with import (nixpkgs + "/nixos/lib/testing-python.nix") {
-            inherit system;
-          };
-
-          makeTest {
-            nodes = {
-              client = { ... }: {
-                imports = [ self.nixosModules.hello ];
-              };
-            };
-
-            testScript =
-              ''
-                start_all()
-                client.wait_for_unit("multi-user.target")
-                client.succeed("hello")
-              '';
-          };
-      });
+      checks = forAllSystems (system: self.packages.${system} // { });
 
     };
 }
