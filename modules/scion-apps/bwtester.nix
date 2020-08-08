@@ -13,6 +13,14 @@ in
         Whether to enable the scion-app bwtester
       '';
     };
+
+    port = mkOption {
+      type = types.int;
+      default = 30100;
+      description = ''
+        Port to pass to scion-bwtestserver
+      '';
+    };
   };
 
   config = mkIf cfg.enable {
@@ -39,7 +47,7 @@ in
         RemainAfterExit = false;
         KillMode = "control-group";
 
-        ExecStart = "${pkgs.scion-apps}/bin/scion-bwtestserver -p 30100 -log_dir /var/lib/scion/logs";
+        ExecStart = "${pkgs.scion-apps}/bin/scion-bwtestserver -p ${toString cfg.port} -log_dir /var/lib/scion/logs";
       };
     };
   };
