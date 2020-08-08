@@ -63,7 +63,7 @@ in
             pkgs.runCommand "extracted-scionlab-config"
               {
                 src = cfg.configTarball;
-                nativeBuildInputs = [ pkgs.gnutar ];
+                nativeBuildInputs = [ pkgs.gnutar pkgs.jq pkgs.coreutils ];
               } ''
               tar xvf $src
 
@@ -74,6 +74,10 @@ in
               for file in $(grep -rl gen/ $out); do
                 sed -i 's@gen/@/etc/scion/gen/@g' $file
               done
+
+              cat gen/scionlab-config.json | jq '.host_id = $id | .host_secret = $secret' \
+                --arg id "$(od -A n -t x8 -N 16 /dev/random | tr -d ' \n')" \
+                --arg secret "$(od -A n -t x8 -N 16 /dev/random | tr -d ' \n')" > gen/scionlab-config.json
             '';
         in
         {
