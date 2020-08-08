@@ -90,25 +90,30 @@ in
     (mkIf (cfg.enable && cfg.openvpnConfig != null) {
       services.openvpn.servers.scionlab.config = (builtins.readFile cfg.openvpnConfig)
         + ''
-          # Manage DNS configuration on a per-link basis for systemd-resolved
-          script-security 2
-          up ${pkgs.update-systemd-resolved}/libexec/openvpn/update-systemd-resolved
-          up-restart
-          down ${pkgs.update-systemd-resolved}/libexec/openvpn/update-systemd-resolved
-          down-pre
+        # Manage DNS configuration on a per-link basis for systemd-resolved
+        script-security 2
+        up ${pkgs.update-systemd-resolved}/libexec/openvpn/update-systemd-resolved
+        up-restart
+        down ${pkgs.update-systemd-resolved}/libexec/openvpn/update-systemd-resolved
+        down-pre
 
-          # Send all DNS traffic through the VPN tunnel and prevent DNS leaks
-          dhcp-option DOMAIN-ROUTE .
-        ''
+        # Send all DNS traffic through the VPN tunnel and prevent DNS leaks
+        dhcp-option DOMAIN-ROUTE .
+      ''
       ;
-    })
+    }
+    )
 
     (mkIf cfg.enable {
       assertions = [
-        { assertion = cfg.enable -> cfg.v != null;
-          message = "ISD AS identifier is invalid."; }
-        { assertion = cfg.enable -> cfg.configDirectory != null;
-          message = "SCION configuration is invalid."; }
+        {
+          assertion = cfg.enable -> cfg.v != null;
+          message = "ISD AS identifier is invalid.";
+        }
+        {
+          assertion = cfg.enable -> cfg.configDirectory != null;
+          message = "SCION configuration is invalid.";
+        }
       ];
 
       environment.etc."scion/gen".source = cfg.configDirectory;

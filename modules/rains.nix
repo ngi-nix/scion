@@ -1,7 +1,6 @@
 { config, pkgs, lib, ... }:
 
 with lib;
-
 let
   cfg = config.services.rains;
 in
@@ -19,6 +18,6 @@ in
   config = mkIf cfg.enable {
     environment.systemPackages = with pkgs; [ rains ];
 
-    systemd.services.rains = {};
+    systemd.services.rains = { };
   };
 }
