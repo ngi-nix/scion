@@ -84,7 +84,7 @@ in
     )
 
     (mkIf (cfg.enable && cfg.openvpnConfig != null) {
-      services.openvpn.servers.scion.config = (builtins.readFile cfg.openvpnConfig)
+      services.openvpn.servers.scionlab.config = (builtins.readFile cfg.openvpnConfig)
         + ''
           # Manage DNS configuration on a per-link basis for systemd-resolved
           script-security 2
@@ -112,8 +112,8 @@ in
 
       systemd.targets.scionlab = {
         # Since this is the "manual" approach, we have to ensure the openvpn is started before scionlab
-        after = [ "openvpn-scion.service" ];
-        requires = [ "openvpn-scion.service" ];
+        after = [ "openvpn-scionlab.service" ];
+        requires = [ "openvpn-scionlab.service" ];
         wants = [ "scion-dispatcher.service" ] ++ map (service: "${service}${cfg.v}.service") [ "scion-border-router@" "scion-control-service@" "scion-daemon@" ];
         wantedBy = [ "multi-user.target" ];
         description = "SCIONLab Service";
