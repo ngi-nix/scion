@@ -38,7 +38,7 @@ in
       '';
     };
 
-    v = mkOption {
+    identifier = mkOption {
       type = types.nullOr types.str;
       default = null;
       example = "16-ffaa_0_1002";
@@ -107,7 +107,7 @@ in
     (mkIf cfg.enable {
       assertions = [
         {
-          assertion = cfg.enable -> cfg.v != null;
+          assertion = cfg.enable -> cfg.identifier != null;
           message = "ISD AS identifier is invalid.";
         }
         {
@@ -123,7 +123,7 @@ in
         # Since this is the "manual" approach, we have to ensure the openvpn is started before scionlab
         after = [ "openvpn-scionlab.service" ];
         requires = [ "openvpn-scionlab.service" ];
-        wants = [ "scion-dispatcher.service" ] ++ map (service: "${service}${cfg.v}.service") [ "scion-border-router@" "scion-control-service@" "scion-daemon@" ];
+        wants = [ "scion-dispatcher.service" ] ++ map (service: "${service}${cfg.identifier}.service") [ "scion-border-router@" "scion-control-service@" "scion-daemon@" ];
         wantedBy = [ "multi-user.target" ];
         description = "SCIONLab Service";
       };
