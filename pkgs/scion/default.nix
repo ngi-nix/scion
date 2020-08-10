@@ -13,4 +13,6 @@ buildGoModule {
 
   goPackagePath = "github.com/netsec-ethz/scion";
   vendorSha256 = "06vr6920n4461xzam4xgry26k2s71lihlb22ngm13mrf1i26bwg4";
+
+  doCheck = false;
 }
