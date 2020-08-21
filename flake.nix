@@ -100,26 +100,15 @@
           # VM-specific configuration
           ({ modulesPath, pkgs, ... }: {
             imports = [ (modulesPath + "/virtualisation/qemu-vm.nix") ];
-            virtualisation.cores = 2;
-            virtualisation.writableStore = false;
-            virtualisation.useBootLoader = true;
-
-            environment.systemPackages = with pkgs; [ chromium feh ];
-
-            sound.enable = true;
-            hardware.pulseaudio.enable = true;
+            environment.systemPackages = with pkgs; [ feh chromium ];
 
             networking.hostName = "scionlab";
-            networking.dhcpcd.enable = false;
-            systemd.network.enable = true;
+            networking.networkmanager.enable = true;
 
             services.xserver.enable = true;
             services.xserver.layout = "us";
             services.xserver.windowManager.i3.enable = true;
-            services.xserver.desktopManager.pantheon.enable = true; # for some reason this makes the network work...
             services.xserver.displayManager.lightdm.enable = true;
-            services.xserver.displayManager.lightdm.greeters.gtk.enable = true;
-            services.xserver.displayManager.lightdm.greeters.pantheon.enable = false;
 
             users.mutableUsers = false;
             users.users.scionlab = {
