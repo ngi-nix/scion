@@ -93,6 +93,66 @@
         rains = import ./modules/rains.nix;
       };
 
+      # NixOS system configuration, if applicable
+      nixosConfigurations.scionlab = nixpkgs.lib.nixosSystem {
+        system = "x86_64-linux"; # Hardcoded
+        modules = [
+          # VM-specific configuration
+          ({ modulesPath, pkgs, ... }: {
+            imports = [ (modulesPath + "/virtualisation/qemu-vm.nix") ];
+            virtualisation.cores = 2;
+            virtualisation.writableStore = false;
+            virtualisation.useBootLoader = true;
+
+            environment.systemPackages = with pkgs; [ chromium feh ];
+
+            sound.enable = true;
+            hardware.pulseaudio.enable = true;
+
+            networking.hostName = "scionlab";
+            networking.dhcpcd.enable = false;
+            systemd.network.enable = true;
+
+            services.xserver.enable = true;
+            services.xserver.layout = "us";
+            services.xserver.windowManager.i3.enable = true;
+            services.xserver.desktopManager.pantheon.enable = true; # for some reason this makes the network work...
+            services.xserver.displayManager.lightdm.enable = true;
+            services.xserver.displayManager.lightdm.greeters.gtk.enable = true;
+            services.xserver.displayManager.lightdm.greeters.pantheon.enable = false;
+
+            users.mutableUsers = false;
+            users.users.scionlab = {
+              password = "scionlab"; # yes, very secure, I know
+              createHome = true;
+              isNormalUser = true;
+              extraGroups = [ "wheel" ];
+            };
+          })
+
+          # SCIONLab support
+          ({ ... }: {
+            imports = [
+              self.nixosModules.scionlab
+              self.nixosModules.scion-apps
+            ];
+
+            nixpkgs.overlays = [ self.overlay ];
+          })
+
+          # SCIONLab configuration
+          ({ ... }: {
+              services.scionlab.enable = true;
+              # Adjust to downloaded tarball path
+              services.scionlab.configTarball = ./18-ffaa.tar.gz;
+              services.scionlab.identifier = "18-ffaa_1_d91-1";
+
+              services.scion.apps.webapp.enable = true;
+              services.scion.apps.bwtester.enable = true;
+          })
+        ];
+      };
+
       # Tests run by 'nix flake check' and by Hydra.
       checks = forAllSystems (system: self.packages.${system} // { });
 
