@@ -138,6 +138,7 @@ in
         "d /var/lib/scion/gen       0750 scion scion -"
         "d /var/lib/scion/gen-cache 0750 scion scion -"
         "d /var/lib/scion/gen-certs 0750 scion scion -"
+        "d /var/log/scion           0750 scion scion -"
       ];
 
       systemd.services =
