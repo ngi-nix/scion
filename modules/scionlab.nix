@@ -69,20 +69,16 @@ in
 
               mkdir -p $out
               cp client-scionlab-*.conf $out/client-scionlab.conf
-              cp -r gen $out
-
-              for file in $(grep -rl gen/ $out); do
-                sed -i 's@gen/@/etc/scion/gen/@g' $file
-              done
+              cp -r gen $out/gen
 
               cat gen/scionlab-config.json | jq '.host_id = $id | .host_secret = $secret' \
                 --arg id "$(od -A n -t x8 -N 16 /dev/random | tr -d ' \n')" \
-                --arg secret "$(od -A n -t x8 -N 16 /dev/random | tr -d ' \n')" > gen/scionlab-config.json
+                --arg secret "$(od -A n -t x8 -N 16 /dev/random | tr -d ' \n')" > $out/gen/scionlab-config.json
             '';
         in
         {
           openvpnConfig = extractedTarball + "/client-scionlab.conf";
-          configDirectory = extractedTarball + "/gen";
+          configDirectory = extractedTarball;
         };
     }
     )
@@ -104,7 +100,7 @@ in
         }
       ];
 
-      environment.etc."scion/gen".source = cfg.configDirectory;
+      environment.etc."scion".source = cfg.configDirectory;
       environment.systemPackages = with pkgs; [ scion ];
 
       systemd.targets.scionlab = {
