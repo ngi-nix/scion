@@ -63,13 +63,20 @@ in
             pkgs.runCommand "extracted-scionlab-config"
               {
                 src = cfg.configTarball;
-                nativeBuildInputs = [ pkgs.gnutar pkgs.jq pkgs.coreutils ];
+                nativeBuildInputs = with pkgs; [ jq gnutar coreutils openssl ];
               } ''
               tar xvf $src
 
               mkdir -p $out
               cp client-scionlab-*.conf $out/client-scionlab.conf
               cp -r gen $out/gen
+
+              mkdir -p $out/gen-certs
+              old=$(umask)
+              umask 0177
+              openssl genrsa -out "$out/gen-certs/tls.key" 2048
+              umask "$old"
+              openssl req -new -x509 -key "$out/gen-certs/tls.key" -out "$out/gen-certs/tls.pem" -days 3650 -subj /CN=scion_def_srv
 
               cat gen/scionlab-config.json | jq '.host_id = $id | .host_secret = $secret' \
                 --arg id "$(od -A n -t x8 -N 16 /dev/random | tr -d ' \n')" \
@@ -179,20 +186,6 @@ in
             serviceConfig = {
               ExecStart = "${pkgs.scion-systemd-wrapper}/bin/scion-systemd-wrapper ${pkgs.scion}/bin/cs /etc/scion/gen/ISD-isd-/AS-as-/cs%i/cs.toml %i";
             };
-
-            preStart = ''
-              old=$(umask)
-
-              if [ ! -f gen-certs/tls.key ]; then
-                umask 0177
-                ${pkgs.openssl}/bin/openssl genrsa -out "gen-certs/tls.key" 2048
-              fi
-
-              if [ ! -f gen-certs/tls.pem ]; then
-                umask "$old"
-                ${pkgs.openssl}/bin/openssl req -new -x509 -key "gen-certs/tls.key" -out "gen-certs/tls.pem" -days 3650 -subj /CN=scion_def_srv
-              fi
-            '';
           };
 
           "scion-daemon@" = {
