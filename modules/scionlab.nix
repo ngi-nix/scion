@@ -199,6 +199,7 @@ in
 
       users = {
         users.scion = {
+          isSystemUser = true;
           group = "scion";
           description = "SCIONLab user";
         };
