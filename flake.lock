@@ -77,15 +77,15 @@
     "scion-src": {
       "flake": false,
       "locked": {
-        "lastModified": 1645414291,
+        "lastModified": 1645440591,
         "narHash": "sha256-ZJYXdv2jNdgIOTjAJX3siAlUXnoSqnydZDW5wEezt3c=",
-        "owner": "matthewcroughan",
+        "owner": "netsec-ethz",
         "repo": "scion",
-        "rev": "148a3da4bcdb508fce774c7b87bf1b680888e2a5",
+        "rev": "1589a47f8c79cf43d13e86cefc16ac9ea8694ab5",
         "type": "github"
       },
       "original": {
-        "owner": "matthewcroughan",
+        "owner": "netsec-ethz",
         "ref": "scionlab",
         "repo": "scion",
         "type": "github"
