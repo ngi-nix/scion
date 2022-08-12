@@ -36,6 +36,13 @@
     in
     {
 
+      apps = forAllSystems (system: {
+        vm = {
+          type = "app";
+          program = "${self.nixosConfigurations.scionlab.config.system.build.vm}/bin/run-scionlab-vm";
+        };
+      });
+
       # A Nixpkgs overlay.
       overlay = final: prev: with final.pkgs; {
 
