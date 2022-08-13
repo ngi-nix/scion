@@ -52,6 +52,8 @@
           src = scion-src;
           vendorSha256 = "sha256-VeT20we0EEExSpue6r63cKCXLyJ2ILXAzm9I8FqrUDI=";
           postPatch = ''
+            patchShebangs **/*.sh
+
             substituteInPlace go/pkg/proto/daemon/mock_daemon/daemon.go \
               --replace ColibriList ColibriListRsvs \
               --replace ColibriAdmissionEntryResponse ColibriAddAdmissionEntryResponse \
@@ -60,6 +62,9 @@
               --replace ColibriCleanupResponse ColibriCleanupRsvResponse \
               --replace ColibriSetupRequest ColibriSetupRsvRequest \
               --replace ColibriSetupResponse ColibriSetupRsvResponse
+          '';
+          postInstall = ''
+            cp scion.sh $out/
           '';
           doCheck = false;
         };
@@ -89,6 +94,10 @@
           pname = "scion-apps";
           version = versions.scion;
           src = scion-apps-src;
+          postPatch = ''
+            substituteInPlace webapp/web/tests/health/scmpcheck.sh \
+              --replace "hostname -I" "hostname -i"
+          '';
           buildInputs = [ openpam ];
           vendorSha256 = "sha256-aJETTd/HlzTo/FoWiGFdzfhjg2gv65vRw0EvjLIxErY=";
           postInstall = ''
@@ -129,7 +138,7 @@
           pname = "rains";
           version = versions.rains;
           src = rains-src;
-          vendorSha256 = "sha256-y31miMg3wg+zkRl43DeYcEKT/7p8bTmkWvLgba4HQHU=";
+          vendorSha256 = "sha256-ppJ1Z4mVdJYl1sUIlFXbiTi6Mq16PH/0iWDIn5YMIp8=";
         };
 
       };

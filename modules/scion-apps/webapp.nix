@@ -26,7 +26,10 @@ in
 
       description = "SCION Web App";
       documentation = [ "https://www.scionlab.org" ];
-      path = with pkgs; [ bash gnused coreutils curl gnugrep python3 procps ];
+      path = with pkgs; [
+        bash gnused coreutils curl gnugrep python3 procps nettools which
+        scion scion-apps
+      ];
 
       serviceConfig = {
         Type = "simple";
@@ -34,6 +37,7 @@ in
         Group = "scion";
 
         WorkingDirectory = "/var/lib/scion";
+        Environment = "SCION_ROOT=${pkgs.scion}";
 
         RestartSec = 10;
         Restart = "on-failure";
@@ -46,7 +50,7 @@ in
         mkdir -p scion-webapp/data
 
         ${pkgs.scion-apps}/bin/scion-webapp -r /var/lib/scion/scion-webapp/data \
-          -sgen /etc/scion/gen -sgenc /var/lib/scion/gen-cache \
+          -sgen /etc/scion -sgenc /var/lib/scion/gen-cache \
           -srvroot /var/lib/scion/scion-webapp
       '';
     };
