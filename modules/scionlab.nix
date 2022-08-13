@@ -137,7 +137,7 @@ in
         # Since this is the "manual" approach, we have to ensure the openvpn is started before scionlab
         after = [ "openvpn-scionlab.service" ];
         requires = [ "openvpn-scionlab.service" ];
-        wants = [ "scion-dispatcher.service" "scion-border-router.service" "scion-control-service.service" "scion-daemon.service" ];
+        wants = [ "scion-dispatcher.service" "scion-border-router.service" "scion-control-service.service" "scion-colibri.service" "scion-daemon.service" ];
         wantedBy = [ "multi-user.target" ];
         description = "SCIONLab Service";
       };
@@ -159,7 +159,7 @@ in
         let
           baseplateServices =
             genAttrs
-              [ "scion-dispatcher" "scion-border-router" "scion-control-service" "scion-daemon" ]
+              [ "scion-dispatcher" "scion-border-router" "scion-control-service" "scion-colibri" "scion-daemon" ]
               (service: {
                 after = [ "network-online.target" ] ++ optional (service != "scion-dispatcher") "scion-dispatcher.service";
                 wants = [ "network-online.target" ];
@@ -201,6 +201,13 @@ in
             description = "SCION Border Router";
             serviceConfig = {
               ExecStart = "${pkgs.scion}/bin/posix-router --config /etc/scion/br-1.toml";
+            };
+          };
+
+          "scion-colibri" = {
+            description = "SCION Colibri";
+            serviceConfig = {
+              ExecStart = "${pkgs.scion}/bin/co --config /etc/scion/co-1.toml";
             };
           };
 
