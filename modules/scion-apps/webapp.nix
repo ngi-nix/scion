@@ -46,8 +46,7 @@ in
         mkdir -p scion-webapp/data
 
         ${pkgs.scion-apps}/bin/scion-webapp -r /var/lib/scion/scion-webapp/data \
-          -sabin ${pkgs.scion-apps}/bin -sbin ${pkgs.scion}/bin \
-          -sgen /etc/scion/gen -sgenc /var/lib/scion/gen-cache -slogs /var/lib/scion/logs \
+          -sgen /etc/scion/gen -sgenc /var/lib/scion/gen-cache \
           -srvroot /var/lib/scion/scion-webapp
       '';
     };

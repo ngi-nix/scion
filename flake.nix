@@ -199,8 +199,8 @@
           ({ ... }: {
               services.scionlab.enable = true;
               # Adjust to downloaded tarball path
-              services.scionlab.configTarball = ./17-ffaa_1_db5.tar.gz;
-              services.scionlab.identifier = "17-ffaa_1_db5-1";
+              services.scionlab.configTarball = ./19-ffaa_1_fe3.tar.gz;
+              services.scionlab.identifier = "19-ffaa_0_1303";
 
               services.scion.apps.webapp.enable = true;
               services.scion.apps.bwtester.enable = true;

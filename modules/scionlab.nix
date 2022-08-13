@@ -67,24 +67,47 @@ in
               } ''
               tar xvf $src
 
-              mkdir -p $out
-              cp client-scionlab-*.conf $out/client-scionlab.conf
-              cp -r gen $out/gen
+              mkdir -p $out/etc/openvpn
+              cp etc/openvpn/client-scionlab-*.conf $out/etc/openvpn/client-scionlab.conf
+              cp -r etc/scion $out/etc/scion
+              cp scionlab-config.json $out/etc/scion/
 
-              mkdir -p $out/gen-certs
-              old=$(umask)
-              umask 0177
-              openssl genrsa -out "$out/gen-certs/tls.key" 2048
-              umask "$old"
-              openssl req -new -x509 -key "$out/gen-certs/tls.key" -out "$out/gen-certs/tls.pem" -days 3650 -subj /CN=scion_def_srv
+              cat > $out/etc/scion/dispatcher.toml <<EOF
+              [dispatcher]
+              id = "${cfg.identifier}"
+              EOF
 
-              cat gen/scionlab-config.json | jq '.host_id = $id | .host_secret = $secret' \
-                --arg id "$(od -A n -t x8 -N 16 /dev/random | tr -d ' \n')" \
-                --arg secret "$(od -A n -t x8 -N 16 /dev/random | tr -d ' \n')" > $out/gen/scionlab-config.json
+              cat > $out/etc/scion/sd.toml <<EOF
+              [general]
+              config_dir = "/etc/scion"
+              id = "sd"
+              reconnect_to_dispatcher = true
+              [drkey_lvl2_db]
+              connection = "gen-cache/sd.drkey.db"
+              [path_db]
+              connection = "gen-cache/sd.path.db"
+              [trust_db]
+              connection = "gen-cache/sd.trust.db"
+              [log.console]
+              level = "info"
+              EOF
+
+              ln -s /var/lib/scion/gen-cache $out/etc/scion/gen-cache
+
+              # mkdir -p $out/gen-certs
+              # old=$(umask)
+              # umask 0177
+              # openssl genrsa -out "$out/gen-certs/tls.key" 2048
+              # umask "$old"
+              # openssl req -new -x509 -key "$out/gen-certs/tls.key" -out "$out/gen-certs/tls.pem" -days 3650 -subj /CN=scion_def_srv
+
+              # cat gen/scionlab-config.json | jq '.host_id = $id | .host_secret = $secret' \
+              #   --arg id "$(od -A n -t x8 -N 16 /dev/random | tr -d ' \n')" \
+              #   --arg secret "$(od -A n -t x8 -N 16 /dev/random | tr -d ' \n')" > $out/gen/scionlab-config.json
             '';
         in
         {
-          openvpnConfig = extractedTarball + "/client-scionlab.conf";
+          openvpnConfig = extractedTarball + "/etc/openvpn/client-scionlab.conf";
           configDirectory = extractedTarball;
         };
     }
@@ -107,14 +130,14 @@ in
         }
       ];
 
-      environment.etc."scion".source = cfg.configDirectory;
+      environment.etc."scion".source = "${cfg.configDirectory}/etc/scion";
       environment.systemPackages = with pkgs; [ scion ];
 
       systemd.targets.scionlab = {
         # Since this is the "manual" approach, we have to ensure the openvpn is started before scionlab
         after = [ "openvpn-scionlab.service" ];
         requires = [ "openvpn-scionlab.service" ];
-        wants = [ "scion-dispatcher.service" ] ++ map (service: "${service}${cfg.identifier}.service") [ "scion-border-router@" "scion-control-service@" "scion-daemon@" ];
+        wants = [ "scion-dispatcher.service" "scion-border-router.service" "scion-control-service.service" "scion-daemon.service" ];
         wantedBy = [ "multi-user.target" ];
         description = "SCIONLab Service";
       };
@@ -136,7 +159,7 @@ in
         let
           baseplateServices =
             genAttrs
-              [ "scion-dispatcher" "scion-border-router@" "scion-control-service@" "scion-daemon@" ]
+              [ "scion-dispatcher" "scion-border-router" "scion-control-service" "scion-daemon" ]
               (service: {
                 after = [ "network-online.target" ] ++ optional (service != "scion-dispatcher") "scion-dispatcher.service";
                 wants = [ "network-online.target" ];
@@ -170,29 +193,29 @@ in
             description = "SCION Dispatcher";
             serviceConfig = {
               ExecStartPre = "${pkgs.coreutils}/bin/rm -rf /run/shm/dispatcher/";
-              ExecStart = "${pkgs.scion-systemd-wrapper}/bin/scion-systemd-wrapper ${pkgs.scion}/bin/godispatcher /etc/scion/gen/dispatcher/disp.toml %i";
+              ExecStart = "${pkgs.scion}/bin/dispatcher --config /etc/scion/dispatcher.toml";
             };
           };
 
-          "scion-border-router@" = {
+          "scion-border-router" = {
             description = "SCION Border Router";
             serviceConfig = {
-              ExecStart = "${pkgs.scion-systemd-wrapper}/bin/scion-systemd-wrapper ${pkgs.scion}/bin/border /etc/scion/gen/ISD-isd-/AS-as-/br%i/br.toml %i";
+              ExecStart = "${pkgs.scion}/bin/posix-router --config /etc/scion/br-1.toml";
             };
           };
 
-          "scion-control-service@" = {
+          "scion-control-service" = {
             description = "SCION Control Service";
             serviceConfig = {
-              ExecStart = "${pkgs.scion-systemd-wrapper}/bin/scion-systemd-wrapper ${pkgs.scion}/bin/cs /etc/scion/gen/ISD-isd-/AS-as-/cs%i/cs.toml %i";
+              ExecStart = "${pkgs.scion}/bin/cs --config /etc/scion/cs-1.toml";
             };
           };
 
-          "scion-daemon@" = {
+          "scion-daemon" = {
             description = "SCION Daemon";
             serviceConfig = {
               ExecStartPre = "${pkgs.coreutils}/bin/rm -rf /run/shm/sciond/";
-              ExecStart = "${pkgs.scion-systemd-wrapper}/bin/scion-systemd-wrapper ${pkgs.scion}/bin/sciond /etc/scion/gen/ISD-isd-/AS-as-/endhost/sd.toml %i";
+              ExecStart = "${pkgs.scion}/bin/daemon --config /etc/scion/sd.toml";
             };
           };
         };

@@ -47,7 +47,7 @@ in
         RemainAfterExit = false;
         KillMode = "control-group";
 
-        ExecStart = "${pkgs.scion-apps}/bin/scion-bwtestserver -p ${toString cfg.port} -log_dir /var/lib/scion/logs";
+        ExecStart = "${pkgs.scion-apps}/bin/scion-bwtestserver --listen=:${toString cfg.port}";
       };
     };
   };
