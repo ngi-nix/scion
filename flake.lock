@@ -2,11 +2,11 @@
   "nodes": {
     "nixpkgs": {
       "locked": {
-        "lastModified": 1597943282,
-        "narHash": "sha256-G/VQBlqO7YeFOSvn29RqdvABZxmQBtiRYVA6kjqWZ6o=",
+        "lastModified": 1660162369,
+        "narHash": "sha256-pZukMP4zCA1FaBg0xHxf7KdE/Nv/C5YbDID7h2L8O7A=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "c59ea8b8a0e7f927e7291c14ea6cd1bd3a16ff38",
+        "rev": "3a11db5f408095b8f08b098ec2066947f4b72ce2",
         "type": "github"
       },
       "original": {
@@ -19,11 +19,11 @@
     "rains-src": {
       "flake": false,
       "locked": {
-        "lastModified": 1585582333,
-        "narHash": "sha256-Ow3pcO3g9WtGCyOxXssoqcllIMDOuBxRGUBfd7wRweQ=",
+        "lastModified": 1646899452,
+        "narHash": "sha256-xhVNJb/SV6Mhht+FZMQ9ssYxqN8YVTYn3T7k5YgrjG0=",
         "owner": "netsec-ethz",
         "repo": "rains",
-        "rev": "053fc93906636f44fb3334115665d769870aa411",
+        "rev": "7775c2e09d74b7ab94abe3a8511201765616428c",
         "type": "github"
       },
       "original": {
@@ -45,11 +45,11 @@
     "scion-apps-src": {
       "flake": false,
       "locked": {
-        "lastModified": 1597321346,
-        "narHash": "sha256-BVIUClnNWTgPuTkOVY3Nff6P3ju0zUzdMz0KObZgtFY=",
+        "lastModified": 1656668029,
+        "narHash": "sha256-Wy+/tPivsjy0hkVZgvhPl5Ini+bdbaXnoiYD2akt6X0=",
         "owner": "netsec-ethz",
         "repo": "scion-apps",
-        "rev": "99cb415b8dbed1fa6935626226d13467a3b2fd64",
+        "rev": "fddeff09fa6605d92d6f5166cc64912552d98af6",
         "type": "github"
       },
       "original": {
@@ -77,11 +77,11 @@
     "scion-src": {
       "flake": false,
       "locked": {
-        "lastModified": 1597821936,
-        "narHash": "sha256-adtM26//3GhjHtfCBxeuf9YCJZHxeHWrqH122nJeE/U=",
+        "lastModified": 1656663920,
+        "narHash": "sha256-Tw+B93ccjn8k5ekoM1P7s3hWAYUWLHW2Xoj56P5qAYE=",
         "owner": "netsec-ethz",
         "repo": "scion",
-        "rev": "70b007b4971b54fd1f2a63e032f44679ba44834a",
+        "rev": "f2d695ede82a3b9b9e8b116ebbe6cb8a8bb42f3d",
         "type": "github"
       },
       "original": {
@@ -94,11 +94,11 @@
     "scionlab-src": {
       "flake": false,
       "locked": {
-        "lastModified": 1597766307,
-        "narHash": "sha256-HVfoo0UR+Ot1WdMa+T4rpLF/kP+3csSGOBGeiY54rY8=",
+        "lastModified": 1655307201,
+        "narHash": "sha256-Oa1Cw8Y65Z0ZusunBr+1c0B+hMk5hhUizZb7UngQT6Y=",
         "owner": "netsec-ethz",
         "repo": "scionlab",
-        "rev": "a82764e8c49b6e931a8b4bb4125502a6b93b4e43",
+        "rev": "d5ba556c393d52868837a98f614b46af012d9fbd",
         "type": "github"
       },
       "original": {
