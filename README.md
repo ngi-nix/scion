@@ -8,4 +8,4 @@ Funded by the European Commission under the [Next Generation Internet](https://w
 
 ### Current State
 
-As of 2020, September 11, this flake is in a working state and achieving all of its objectives.
+As of 2020, September 11, at revision `b97c00c524930e034f84d62c7aaba7c2519faee7` this flake is in a working state and achieving all of its objectives. However, scionlab.org no longer returns the same configuration tarball for the software, and the software now expects different configuration.
