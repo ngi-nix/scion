@@ -52,7 +52,7 @@
           src = scion-src;
           vendorSha256 = "sha256-VeT20we0EEExSpue6r63cKCXLyJ2ILXAzm9I8FqrUDI=";
           postPatch = ''
-            patchShebangs **/*.sh
+            patchShebangs **/*.sh scion.sh
 
             substituteInPlace go/pkg/proto/daemon/mock_daemon/daemon.go \
               --replace ColibriList ColibriListRsvs \

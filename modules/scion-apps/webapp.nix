@@ -27,7 +27,9 @@ in
       description = "SCION Web App";
       documentation = [ "https://www.scionlab.org" ];
       path = with pkgs; [
-        bash gnused coreutils curl gnugrep python3 procps nettools which
+        bash gawk gnused coreutils curl gnugrep
+        (python3.withPackages (p: with p; [ supervisor ]))
+        procps nettools which
         scion scion-apps
       ];
 
