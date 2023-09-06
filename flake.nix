@@ -5,7 +5,7 @@
   inputs.nixpkgs = { type = "github"; owner = "NixOS"; repo = "nixpkgs"; ref = "nixos-unstable"; };
 
   # Upstream source tree(s).
-  inputs.scion-src = { type = "github"; owner = "netsec-ethz"; repo = "scion"; ref = "scionlab"; flake = false; };
+  inputs.scion-src = { type = "github"; owner = "scionproto"; repo = "scion"; ref = "v0.9.1"; flake = false; };
 
   inputs.scion-apps-src = { type = "github"; owner = "netsec-ethz"; repo = "scion-apps"; flake = false; };
   inputs.scionlab-src = { type = "github"; owner = "netsec-ethz"; repo = "scionlab"; ref = "develop"; flake = false; };
@@ -46,26 +46,14 @@
       # A Nixpkgs overlay.
       overlay = final: prev: with final.pkgs; {
 
-        scion = buildGo117Module {
+        scion = buildGoModule {
           pname = "scion";
           version = versions.scion;
           src = scion-src;
-          vendorSha256 = "sha256-VeT20we0EEExSpue6r63cKCXLyJ2ILXAzm9I8FqrUDI=";
-          postPatch = ''
-            patchShebangs **/*.sh scion.sh
+          vendorHash = "sha256-QoKOiFLOlNyS7SwTQ2hBfdiPTO9QOQb1SUzAOBduL+0=";
 
-            substituteInPlace go/pkg/proto/daemon/mock_daemon/daemon.go \
-              --replace ColibriList ColibriListRsvs \
-              --replace ColibriAdmissionEntryResponse ColibriAddAdmissionEntryResponse \
-              --replace ColibriAdmissionEntry ColibriAddAdmissionEntryRequest \
-              --replace ColibriCleanupRequest ColibriCleanupRsvRequest \
-              --replace ColibriCleanupResponse ColibriCleanupRsvResponse \
-              --replace ColibriSetupRequest ColibriSetupRsvRequest \
-              --replace ColibriSetupResponse ColibriSetupRsvResponse
-          '';
-          postInstall = ''
-            cp scion.sh $out/
-          '';
+          excludedPackages = [ "acceptance" "demo" "tools" "pkg/private/xtest/graphupdater" ];
+
           doCheck = false;
         };
 

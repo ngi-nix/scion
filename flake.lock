@@ -77,16 +77,16 @@
     "scion-src": {
       "flake": false,
       "locked": {
-        "lastModified": 1656663920,
-        "narHash": "sha256-Tw+B93ccjn8k5ekoM1P7s3hWAYUWLHW2Xoj56P5qAYE=",
-        "owner": "netsec-ethz",
+        "lastModified": 1698681102,
+        "narHash": "sha256-hiL4JWlvFpbnzfKby7syRUQBp4s4rPTOIbCtdveHeFg=",
+        "owner": "scionproto",
         "repo": "scion",
-        "rev": "f2d695ede82a3b9b9e8b116ebbe6cb8a8bb42f3d",
+        "rev": "a82e4fb9817fe30e60ee5a8740cc1075df10b438",
         "type": "github"
       },
       "original": {
-        "owner": "netsec-ethz",
-        "ref": "scionlab",
+        "owner": "scionproto",
+        "ref": "v0.9.1",
         "repo": "scion",
         "type": "github"
       }
