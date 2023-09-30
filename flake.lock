@@ -45,15 +45,16 @@
     "scion-apps-src": {
       "flake": false,
       "locked": {
-        "lastModified": 1656668029,
-        "narHash": "sha256-Wy+/tPivsjy0hkVZgvhPl5Ini+bdbaXnoiYD2akt6X0=",
+        "lastModified": 1699365709,
+        "narHash": "sha256-iUIpShyaxqfOazWmjlz+2pVlyrIv6neqOR9Ido3FOB0=",
         "owner": "netsec-ethz",
         "repo": "scion-apps",
-        "rev": "fddeff09fa6605d92d6f5166cc64912552d98af6",
+        "rev": "3afc9a9118080aa78e6a6435c06549a8a6c0bd23",
         "type": "github"
       },
       "original": {
         "owner": "netsec-ethz",
+        "ref": "master",
         "repo": "scion-apps",
         "type": "github"
       }
