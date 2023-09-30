@@ -116,6 +116,22 @@
 
         };
 
+        scion-apps-examples = buildGoModule {
+          pname = "scion-apps-examples";
+          version = versions.scion-apps;
+          src = scion-apps-src;
+          modRoot = "_examples";
+
+          vendorHash = "sha256-G7p/1lkTNBGUY+z08T/x8F4rCSPo5m5bEYoDAI8f/84=";
+
+          postInstall = ''
+            for f in $out/bin/*; do
+              mv $f $out/bin/example-$(basename "$f")
+            done
+          '';
+
+        };
+
         scionlab = stdenv.mkDerivation {
           pname = "scionlab";
           version = versions.scionlab;
@@ -153,8 +169,8 @@
         in
         {
           inherit (pkgSet)
-            scion scion-apps scionlab
-            scion-systemd-wrapper
+            scion scion-apps scion-apps-examples
+            scionlab scion-systemd-wrapper
             rains;
         }
       );
