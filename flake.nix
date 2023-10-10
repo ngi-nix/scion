@@ -151,6 +151,7 @@
             cp scionlab-config $out/bin
             runHook postInstall
           '';
+          meta.broken = true;
         };
 
         rains = buildGo117Module {
