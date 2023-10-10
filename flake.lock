@@ -19,11 +19,11 @@
     "rains-src": {
       "flake": false,
       "locked": {
-        "lastModified": 1646899452,
-        "narHash": "sha256-xhVNJb/SV6Mhht+FZMQ9ssYxqN8YVTYn3T7k5YgrjG0=",
+        "lastModified": 1697457689,
+        "narHash": "sha256-UY/qP1edugl/MaHpqkicGdn5ffyDn89Iu8qfv+CChIc=",
         "owner": "netsec-ethz",
         "repo": "rains",
-        "rev": "7775c2e09d74b7ab94abe3a8511201765616428c",
+        "rev": "1e8d70642e60b404e60f18c7d74c8cdda8d3da51",
         "type": "github"
       },
       "original": {

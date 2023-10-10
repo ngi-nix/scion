@@ -154,11 +154,11 @@
           meta.broken = true;
         };
 
-        rains = buildGo117Module {
+        rains = buildGoModule {
           pname = "rains";
           version = versions.rains;
           src = rains-src;
-          vendorSha256 = "sha256-ppJ1Z4mVdJYl1sUIlFXbiTi6Mq16PH/0iWDIn5YMIp8=";
+          vendorHash = "sha256-X9qJh9b7D2MPiYRA9vjWlBHsMh7moGt91OOVqX0Qa+k=";
         };
 
       };
