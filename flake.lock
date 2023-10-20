@@ -2,16 +2,16 @@
   "nodes": {
     "nixpkgs": {
       "locked": {
-        "lastModified": 1660162369,
-        "narHash": "sha256-pZukMP4zCA1FaBg0xHxf7KdE/Nv/C5YbDID7h2L8O7A=",
+        "lastModified": 1693636127,
+        "narHash": "sha256-ZlS/lFGzK7BJXX2YVGnP3yZi3T9OLOEtBCyMJsb91U8=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "3a11db5f408095b8f08b098ec2066947f4b72ce2",
+        "rev": "9075cba53e86dc318d159aee55dc9a7c9a4829c1",
         "type": "github"
       },
       "original": {
         "owner": "NixOS",
-        "ref": "nixos-unstable",
+        "ref": "nixos-23.05",
         "repo": "nixpkgs",
         "type": "github"
       }
@@ -19,11 +19,11 @@
     "rains-src": {
       "flake": false,
       "locked": {
-        "lastModified": 1646899452,
-        "narHash": "sha256-xhVNJb/SV6Mhht+FZMQ9ssYxqN8YVTYn3T7k5YgrjG0=",
+        "lastModified": 1697457689,
+        "narHash": "sha256-UY/qP1edugl/MaHpqkicGdn5ffyDn89Iu8qfv+CChIc=",
         "owner": "netsec-ethz",
         "repo": "rains",
-        "rev": "7775c2e09d74b7ab94abe3a8511201765616428c",
+        "rev": "1e8d70642e60b404e60f18c7d74c8cdda8d3da51",
         "type": "github"
       },
       "original": {
@@ -45,15 +45,16 @@
     "scion-apps-src": {
       "flake": false,
       "locked": {
-        "lastModified": 1656668029,
-        "narHash": "sha256-Wy+/tPivsjy0hkVZgvhPl5Ini+bdbaXnoiYD2akt6X0=",
-        "owner": "netsec-ethz",
+        "lastModified": 1696076386,
+        "narHash": "sha256-7QmPsKcHqiau+x1ur86WQlfO804YQzxZZctgwiD/nBY=",
+        "owner": "sarcasticadmin",
         "repo": "scion-apps",
-        "rev": "fddeff09fa6605d92d6f5166cc64912552d98af6",
+        "rev": "cf4ba539a3f94af0c30dec0d50a5d0a1a0ff0f09",
         "type": "github"
       },
       "original": {
-        "owner": "netsec-ethz",
+        "owner": "sarcasticadmin",
+        "ref": "cf4ba539a3f94af0c30dec0d50a5d0a1a0ff0f09",
         "repo": "scion-apps",
         "type": "github"
       }
@@ -77,16 +78,16 @@
     "scion-src": {
       "flake": false,
       "locked": {
-        "lastModified": 1656663920,
-        "narHash": "sha256-Tw+B93ccjn8k5ekoM1P7s3hWAYUWLHW2Xoj56P5qAYE=",
-        "owner": "netsec-ethz",
+        "lastModified": 1696923788,
+        "narHash": "sha256-YjrVdtwDL1GbgLNEsUeMYW0JFooNf5iGK1dxxUI1Fa8=",
+        "owner": "scionproto",
         "repo": "scion",
-        "rev": "f2d695ede82a3b9b9e8b116ebbe6cb8a8bb42f3d",
+        "rev": "1774cbfccb4cd3814906034e28c802f4dd17c4e3",
         "type": "github"
       },
       "original": {
-        "owner": "netsec-ethz",
-        "ref": "scionlab",
+        "owner": "scionproto",
+        "ref": "master",
         "repo": "scion",
         "type": "github"
       }
